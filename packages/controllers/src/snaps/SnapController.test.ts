@@ -271,7 +271,7 @@ class ExecutionEnvironmentStub implements ExecutionService {
   }
 
   async getRpcRequestHandler(_snapId: string) {
-    return (_: any, request: Record<string, unknown>) => {
+    return (_origin: any, _handler: any, request: Record<string, unknown>) => {
       return new Promise((resolve) => {
         const results = `${request.method}${request.id}`;
         resolve(results);
@@ -1586,11 +1586,15 @@ describe('SnapController', () => {
       });
 
       expect(mockMessageHandler).toHaveBeenCalledTimes(1);
-      expect(mockMessageHandler).toHaveBeenCalledWith('foo.com', {
-        id: 1,
-        method: 'bar',
-        jsonrpc: '2.0',
-      });
+      expect(mockMessageHandler).toHaveBeenCalledWith(
+        'foo.com',
+        'onRpcRequest',
+        {
+          id: 1,
+          method: 'bar',
+          jsonrpc: '2.0',
+        },
+      );
       await service.terminateAllSnaps();
     });
 

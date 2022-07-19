@@ -8,6 +8,8 @@ import { ErrorMessageEvent } from '../ExecutionService';
 import { setupMultiplex } from '../AbstractExecutionService';
 import { NodeProcessExecutionService } from './NodeProcessExecutionService';
 
+const ON_RPC_REQUEST = 'onRpcRequest';
+
 describe('NodeProcessExecutionService', () => {
   it('can boot', async () => {
     const controllerMessenger = new ControllerMessenger<
@@ -124,7 +126,7 @@ describe('NodeProcessExecutionService', () => {
     assert(hook !== undefined);
 
     await expect(
-      hook('fooOrigin', {
+      hook('fooOrigin', ON_RPC_REQUEST, {
         jsonrpc: '2.0',
         method: 'foo',
         params: {},
@@ -187,7 +189,7 @@ describe('NodeProcessExecutionService', () => {
     });
 
     expect(
-      await hook('fooOrigin', {
+      await hook('fooOrigin', ON_RPC_REQUEST, {
         jsonrpc: '2.0',
         method: '',
         params: {},
@@ -258,7 +260,7 @@ describe('NodeProcessExecutionService', () => {
 
     assert(handler !== undefined);
 
-    const result = await handler('foo', {
+    const result = await handler('foo', ON_RPC_REQUEST, {
       jsonrpc: '2.0',
       id: 1,
       method: 'foobar',

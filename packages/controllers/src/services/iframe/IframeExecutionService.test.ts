@@ -182,7 +182,7 @@ describe('IframeExecutionService', () => {
 
     assert(handler !== undefined);
 
-    const result = await handler('foo', {
+    const result = await handler('foo', 'onRpcRequest', {
       jsonrpc: '2.0',
       id: 1,
       method: 'foobar',
