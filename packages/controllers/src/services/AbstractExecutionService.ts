@@ -1,6 +1,10 @@
 import { Duplex } from 'stream';
 import ObjectMultiplex from '@metamask/object-multiplex';
-import { ErrorJSON, SnapExecutionData } from '@metamask/snap-types';
+import {
+  ErrorJSON,
+  SnapExecutionData,
+  HandlerType,
+} from '@metamask/snap-types';
 import { SNAP_STREAM_NAMES } from '@metamask/execution-environments';
 import {
   Duration,
@@ -37,6 +41,7 @@ export type ExecutionServiceArgs = {
 // The snap is the callee
 export type SnapRpcHook = (
   origin: string,
+  handler: HandlerType,
   request: Record<string, unknown>,
 ) => Promise<unknown>;
 
@@ -380,6 +385,7 @@ export abstract class AbstractExecutionService<WorkerType>
   protected _createSnapHooks(snapId: string, workerId: string) {
     const rpcHook = async (
       origin: string,
+      handler: HandlerType,
       request: Record<string, unknown>,
     ) => {
       return await this._command(workerId, {
@@ -388,6 +394,7 @@ export abstract class AbstractExecutionService<WorkerType>
         method: 'snapRpc',
         params: {
           origin,
+          handler,
           request,
           target: snapId,
         },
