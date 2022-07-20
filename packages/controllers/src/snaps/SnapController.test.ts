@@ -20,6 +20,7 @@ import {
   DEFAULT_ENDOWMENTS,
   getSnapSourceShasum,
 } from '@metamask/snap-utils';
+import { HandlerType } from '@metamask/execution-environments';
 import { ExecutionService } from '../services/ExecutionService';
 import { NodeThreadExecutionService, setupMultiplex } from '../services';
 import { delay } from '../utils';
@@ -1588,7 +1589,7 @@ describe('SnapController', () => {
       expect(mockMessageHandler).toHaveBeenCalledTimes(1);
       expect(mockMessageHandler).toHaveBeenCalledWith(
         'foo.com',
-        'onRpcRequest',
+        HandlerType.onRpcRequest,
         {
           id: 1,
           method: 'bar',

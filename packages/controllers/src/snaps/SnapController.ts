@@ -15,7 +15,8 @@ import {
   SubjectPermissions,
   ValidPermission,
 } from '@metamask/controllers';
-import { ErrorJSON, SnapData, SnapId, HandlerType } from '@metamask/snap-types';
+import { ErrorJSON, SnapData, SnapId } from '@metamask/snap-types';
+import { HandlerType } from '@metamask/execution-environments';
 import {
   Duration,
   hasProperty,
@@ -2057,7 +2058,12 @@ export class SnapController extends BaseController<
     origin: string,
     request: Record<string, unknown>,
   ): Promise<unknown> {
-    return this.handleRequest(snapId, origin, 'onRpcRequest', request);
+    return this.handleRequest(
+      snapId,
+      origin,
+      HandlerType.onRpcRequest,
+      request,
+    );
   }
 
   /**
@@ -2073,7 +2079,12 @@ export class SnapController extends BaseController<
     origin: string,
     request: Record<string, unknown>,
   ): Promise<unknown> {
-    return this.handleRequest(snapId, origin, 'onTxConfirmation', request);
+    return this.handleRequest(
+      snapId,
+      origin,
+      HandlerType.onTxConfirmation,
+      request,
+    );
   }
 
   /**
