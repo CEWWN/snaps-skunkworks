@@ -2067,14 +2067,14 @@ export class SnapController extends BaseController<
   }
 
   /**
-   * Passes a JSON-RPC request object to the RPC handler function of a snap, triggering the onTxConfirmation handler.
+   * Passes a JSON-RPC request object to the RPC handler function of a snap, triggering the getTransactionInsightHandler handler.
    *
    * @param snapId - The ID of the recipient snap.
    * @param origin - The origin of the RPC request.
    * @param request - The JSON-RPC request object.
    * @returns The result of the JSON-RPC request.
    */
-  async handleTxInsightRequest(
+  async handleTransactionInsightRequest(
     snapId: SnapId,
     origin: string,
     request: Record<string, unknown>,
@@ -2082,7 +2082,7 @@ export class SnapController extends BaseController<
     return this.handleRequest(
       snapId,
       origin,
-      HandlerType.onTxConfirmation,
+      HandlerType.getTransactionInsight,
       request,
     );
   }
