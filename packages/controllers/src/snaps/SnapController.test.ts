@@ -22,7 +22,11 @@ import {
 } from '@metamask/snap-utils';
 import { HandlerType } from '@metamask/execution-environments';
 import { ExecutionService } from '../services/ExecutionService';
-import { NodeThreadExecutionService, setupMultiplex } from '../services';
+import {
+  NodeThreadExecutionService,
+  setupMultiplex,
+  SnapRpcHookArgs,
+} from '../services';
 import { delay } from '../utils';
 
 import { SnapEndowments } from './endowments';
@@ -272,7 +276,7 @@ class ExecutionEnvironmentStub implements ExecutionService {
   }
 
   async getRpcRequestHandler(_snapId: string) {
-    return (_origin: any, _handler: any, request: Record<string, unknown>) => {
+    return ({ request }: SnapRpcHookArgs) => {
       return new Promise((resolve) => {
         const results = `${request.method}${request.id}`;
         resolve(results);
@@ -1587,15 +1591,15 @@ describe('SnapController', () => {
       });
 
       expect(mockMessageHandler).toHaveBeenCalledTimes(1);
-      expect(mockMessageHandler).toHaveBeenCalledWith(
-        'foo.com',
-        HandlerType.onRpcRequest,
-        {
+      expect(mockMessageHandler).toHaveBeenCalledWith({
+        origin: 'foo.com',
+        handler: HandlerType.onRpcRequest,
+        request: {
           id: 1,
           method: 'bar',
           jsonrpc: '2.0',
         },
-      );
+      });
       await service.terminateAllSnaps();
     });
 

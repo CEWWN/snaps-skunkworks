@@ -37,12 +37,14 @@ export type ExecutionServiceArgs = {
   terminationTimeout?: number;
 };
 
+export type SnapRpcHookArgs = {
+  origin: string;
+  handler: HandlerType;
+  request: Record<string, unknown>;
+};
+
 // The snap is the callee
-export type SnapRpcHook = (
-  origin: string,
-  handler: HandlerType,
-  request: Record<string, unknown>,
-) => Promise<unknown>;
+export type SnapRpcHook = (options: SnapRpcHookArgs) => Promise<unknown>;
 
 export type JobStreams = {
   command: Duplex;
@@ -382,11 +384,7 @@ export abstract class AbstractExecutionService<WorkerType>
   }
 
   protected _createSnapHooks(snapId: string, workerId: string) {
-    const rpcHook = async (
-      origin: string,
-      handler: HandlerType,
-      request: Record<string, unknown>,
-    ) => {
+    const rpcHook = async ({ origin, handler, request }: SnapRpcHookArgs) => {
       return await this._command(workerId, {
         id: nanoid(),
         jsonrpc: '2.0',

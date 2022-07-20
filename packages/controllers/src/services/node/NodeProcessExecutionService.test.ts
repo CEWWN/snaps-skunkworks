@@ -127,11 +127,15 @@ describe('NodeProcessExecutionService', () => {
     assert(hook !== undefined);
 
     await expect(
-      hook('fooOrigin', ON_RPC_REQUEST, {
-        jsonrpc: '2.0',
-        method: 'foo',
-        params: {},
-        id: 1,
+      hook({
+        origin: 'fooOrigin',
+        handler: ON_RPC_REQUEST,
+        request: {
+          jsonrpc: '2.0',
+          method: 'foo',
+          params: {},
+          id: 1,
+        },
       }),
     ).rejects.toThrow('foobar');
     await service.terminateAllSnaps();
@@ -190,11 +194,15 @@ describe('NodeProcessExecutionService', () => {
     });
 
     expect(
-      await hook('fooOrigin', ON_RPC_REQUEST, {
-        jsonrpc: '2.0',
-        method: '',
-        params: {},
-        id: 1,
+      await hook({
+        origin: 'fooOrigin',
+        handler: ON_RPC_REQUEST,
+        request: {
+          jsonrpc: '2.0',
+          method: '',
+          params: {},
+          id: 1,
+        },
       }),
     ).toBe('foo');
 
@@ -261,11 +269,15 @@ describe('NodeProcessExecutionService', () => {
 
     assert(handler !== undefined);
 
-    const result = await handler('foo', ON_RPC_REQUEST, {
-      jsonrpc: '2.0',
-      id: 1,
-      method: 'foobar',
-      params: [],
+    const result = await handler({
+      origin: 'foo',
+      handler: ON_RPC_REQUEST,
+      request: {
+        jsonrpc: '2.0',
+        id: 1,
+        method: 'foobar',
+        params: [],
+      },
     });
 
     expect(result).toBe(blockNumber);

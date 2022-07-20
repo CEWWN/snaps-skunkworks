@@ -183,11 +183,15 @@ describe('IframeExecutionService', () => {
 
     assert(handler !== undefined);
 
-    const result = await handler('foo', HandlerType.onRpcRequest, {
-      jsonrpc: '2.0',
-      id: 1,
-      method: 'foobar',
-      params: [],
+    const result = await handler({
+      origin: 'foo',
+      handler: HandlerType.onRpcRequest,
+      request: {
+        jsonrpc: '2.0',
+        id: 1,
+        method: 'foobar',
+        params: [],
+      },
     });
 
     expect(result).toBe(blockNumber);
