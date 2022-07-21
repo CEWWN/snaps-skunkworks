@@ -270,6 +270,14 @@ export type HandleSnapRpcRequest = {
 };
 
 /**
+ * Handles sending an inbound cronjob message to a snap and returns its result.
+ */
+export type HandleSnapCronjobRequest = {
+  type: `${typeof controllerName}:handleCronjobRequest`;
+  handler: SnapController['handleCronjobRequest'];
+};
+
+/**
  * Gets the specified Snap's persisted state.
  */
 export type GetSnapState = {
@@ -315,6 +323,7 @@ export type SnapControllerActions =
   | GetSnap
   | GetSnapState
   | HandleSnapRpcRequest
+  | HandleSnapCronjobRequest
   | HasSnap
   | UpdateBlockedSnaps
   | UpdateSnapState;
@@ -2079,6 +2088,27 @@ export class SnapController extends BaseController<
       snapId,
       origin,
       handler: HandlerType.getTransactionInsight,
+      request,
+    });
+  }
+
+  /**
+   * Passes a JSON-RPC request object to the RPC handler function of a snap, triggering the onCronjob handler.
+   *
+   * @param snapId - The ID of the recipient snap.
+   * @param origin - The origin of the RPC request.
+   * @param request - The JSON-RPC request object.
+   * @returns The result of the JSON-RPC request.
+   */
+  async handleCronjobRequest(
+    snapId: SnapId,
+    origin: string,
+    request: Record<string, unknown>,
+  ): Promise<unknown> {
+    return this.handleRequest({
+      snapId,
+      origin,
+      handler: HandlerType.onCronjob,
       request,
     });
   }

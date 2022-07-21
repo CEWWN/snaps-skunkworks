@@ -42,6 +42,7 @@
     "@metamask/utils": "^2.0.0",
     "@types/deep-freeze-strict": "^1.1.0",
     "concat-stream": "^2.0.0",
+    "cron-parser": "^4.5.0",
     "deep-freeze-strict": "^1.1.1",
     "eth-rpc-errors": "^4.0.2",
     "gunzip-maybe": "^1.4.2",

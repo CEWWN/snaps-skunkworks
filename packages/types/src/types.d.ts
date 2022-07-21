@@ -33,6 +33,8 @@ export type GetTransactionInsightHandler = (args: {
   transaction: { [key: string]: unknown };
 }) => Promise<string>;
 
+export type OnCronjobHandler = SnapRpcHandler;
+
 export type SnapProvider = MetaMaskInpageProvider;
 
 export type SnapId = string;
@@ -46,4 +48,5 @@ export type ErrorJSON = {
 export type SnapExports = {
   onRpcRequest?: OnRpcRequestHandler;
   getTransactionInsight?: GetTransactionInsightHandler;
+  onCronjob?: OnCronjobHandler;
 };

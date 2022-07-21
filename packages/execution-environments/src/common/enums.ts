@@ -6,4 +6,5 @@ export enum SNAP_STREAM_NAMES {
 export enum HandlerType {
   onRpcRequest = 'onRpcRequest',
   getTransactionInsight = 'getTransactionInsight',
+  onCronjob = 'onCronjob',
 }
